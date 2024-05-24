@@ -1,0 +1,9 @@
+{
+    "imports": {
+        "cli-progress": "npm:cli-progress@^3.12.0",
+        "zod": "https://deno.land/x/zod@v3.22.4/mod.ts",
+        "std/": "https://deno.land/std@0.219.0/",
+        "oak": "jsr:@oak/oak",
+        "logger": "https://deno.land/x/logger@v1.1.6/logger.ts"
+    }
+}
