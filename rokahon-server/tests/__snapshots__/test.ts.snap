@@ -2,13 +2,20 @@ export const snapshot = {};
 
 snapshot[`Scan directories > Titles 1`] = `
 [
-  "tests\\\\test-dir\\\\one\\\\depth\\\\title2",
-  "tests\\\\test-dir\\\\one\\\\title1",
+  "title1",
+  "title2",
 ]
 `;
 
 snapshot[`Scan directories > Chapters 1`] = `
 [
+  [
+    2,
+    [
+      2,
+      1,
+    ],
+  ],
   [
     4,
     [
@@ -18,18 +25,54 @@ snapshot[`Scan directories > Chapters 1`] = `
       3,
     ],
   ],
-  [
-    2,
-    [
-      2,
-      1,
-    ],
-  ],
 ]
 `;
 
 snapshot[`Scan directories 1`] = `
 [
+  {
+    authors: [],
+    chapters: [
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb\\\\1.png",
+            },
+            number: 1,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb\\\\2.png",
+            },
+            number: 2,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb",
+        title: "bbb",
+      },
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1\\\\1.png",
+            },
+            number: 1,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1",
+        title: "chapter-1",
+      },
+    ],
+    path: "tests\\\\test-dir\\\\one\\\\title1",
+    tags: [],
+    title: "title1",
+  },
   {
     authors: [],
     chapters: [
@@ -134,50 +177,7 @@ snapshot[`Scan directories 1`] = `
     ],
     path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2",
     tags: [],
-    title: "tests\\\\test-dir\\\\one\\\\depth\\\\title2",
-  },
-  {
-    authors: [],
-    chapters: [
-      {
-        cover: undefined,
-        pages: [
-          {
-            image: {
-              ext: "png",
-              path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb\\\\1.png",
-            },
-            number: 1,
-          },
-          {
-            image: {
-              ext: "png",
-              path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb\\\\2.png",
-            },
-            number: 2,
-          },
-        ],
-        path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb",
-        title: "bbb",
-      },
-      {
-        cover: undefined,
-        pages: [
-          {
-            image: {
-              ext: "png",
-              path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1\\\\1.png",
-            },
-            number: 1,
-          },
-        ],
-        path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1",
-        title: "chapter-1",
-      },
-    ],
-    path: "tests\\\\test-dir\\\\one\\\\title1",
-    tags: [],
-    title: "tests\\\\test-dir\\\\one\\\\title1",
+    title: "title2",
   },
 ]
 `;

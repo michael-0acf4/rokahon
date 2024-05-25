@@ -5,6 +5,7 @@ import * as path from "std/path/mod.ts";
 export class FileScanner {
   private readonly directories: Array<string>;
   private readonly useCache: boolean;
+  private cache: Record<string, Book> = {};
 
   constructor(directories?: Array<string>, useCache?: boolean) {
     this.useCache = useCache === undefined ? true : useCache;
@@ -65,7 +66,7 @@ export class FileScanner {
       for await (const page of Deno.readDir(nextDir)) {
         if (page.isFile) {
           const currPath = path.join(nextDir, page.name);
-          const pageData = this.getPageHelper(++n, currPath);
+          const pageData = this.checkPage(++n, currPath);
           pageData && chapter.pages.push(pageData);
         }
       }
@@ -78,8 +79,8 @@ export class FileScanner {
     }
 
     if (startLookup != parentDir && chapters.length > 0) {
-      const bookTitle = path.dirname(chapters[0].path);
       const bookPath = path.dirname(chapters[0].path);
+      const bookTitle = path.basename(bookPath);
       books.push(this.normalize({
         title: bookTitle,
         chapters,
@@ -90,14 +91,17 @@ export class FileScanner {
     }
   }
 
-  getPageHelper(index: number, filepath: string) {
-    return {
-      number: index,
-      image: {
-        path: filepath,
-        ext: path.extname(filepath).substring(1),
-      },
-    };
+  checkPage(index: number, filepath: string) {
+    const ext = path.extname(filepath).substring(1);
+    return /jpg|jpeg|png|webp|gif|tiff/i.test(ext)
+      ? {
+        number: index,
+        image: {
+          path: filepath,
+          ext,
+        },
+      }
+      : null;
   }
 
   /**
