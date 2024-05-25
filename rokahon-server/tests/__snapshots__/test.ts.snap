@@ -1,0 +1,183 @@
+export const snapshot = {};
+
+snapshot[`Scan directories > Titles 1`] = `
+[
+  "tests\\\\test-dir\\\\one\\\\depth\\\\title2",
+  "tests\\\\test-dir\\\\one\\\\title1",
+]
+`;
+
+snapshot[`Scan directories > Chapters 1`] = `
+[
+  [
+    4,
+    [
+      2,
+      4,
+      1,
+      3,
+    ],
+  ],
+  [
+    2,
+    [
+      2,
+      1,
+    ],
+  ],
+]
+`;
+
+snapshot[`Scan directories 1`] = `
+[
+  {
+    authors: [],
+    chapters: [
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.1\\\\1.png",
+            },
+            number: 1,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.1\\\\2.png",
+            },
+            number: 2,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.1",
+        title: "chapter-v1.1",
+      },
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.2\\\\1.png",
+            },
+            number: 1,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.2\\\\2.png",
+            },
+            number: 2,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.2\\\\3.png",
+            },
+            number: 3,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.2\\\\4.png",
+            },
+            number: 4,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v1.2",
+        title: "chapter-v1.2",
+      },
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v2.1\\\\1.png",
+            },
+            number: 1,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v2.1",
+        title: "chapter-v2.1",
+      },
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v2.2\\\\1aa.png",
+            },
+            number: 1,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v2.2\\\\4.png",
+            },
+            number: 2,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v2.2\\\\asda4.png",
+            },
+            number: 3,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2\\\\chapter-v2.2",
+        title: "chapter-v2.2",
+      },
+    ],
+    path: "tests\\\\test-dir\\\\one\\\\depth\\\\title2",
+    tags: [],
+    title: "tests\\\\test-dir\\\\one\\\\depth\\\\title2",
+  },
+  {
+    authors: [],
+    chapters: [
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb\\\\1.png",
+            },
+            number: 1,
+          },
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb\\\\2.png",
+            },
+            number: 2,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb",
+        title: "bbb",
+      },
+      {
+        cover: undefined,
+        pages: [
+          {
+            image: {
+              ext: "png",
+              path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1\\\\1.png",
+            },
+            number: 1,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1",
+        title: "chapter-1",
+      },
+    ],
+    path: "tests\\\\test-dir\\\\one\\\\title1",
+    tags: [],
+    title: "tests\\\\test-dir\\\\one\\\\title1",
+  },
+]
+`;

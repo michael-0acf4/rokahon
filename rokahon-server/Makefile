@@ -1,6 +1,6 @@
 MAIN = ./src/main.ts
 BIN = rokahon
-CONFIG = ./src/config.json
+CONFIG = ./src/deno.json
 
 compile:
 	deno compile %* -A --output $(BIN) --config=$(CONFIG) $(MAIN) --is_compiled_binary
@@ -11,5 +11,8 @@ cache:
 server:
 	deno run -A --config=$(CONFIG) $(MAIN)
 
+update-test:
+	deno test -A --config=$(CONFIG) ./tests -- --update
+
 test:
-	deno test -A --config=$(CONFIG) ./tests %*
+	deno test -A --config=$(CONFIG) ./tests

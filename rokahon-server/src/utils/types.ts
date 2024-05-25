@@ -57,26 +57,14 @@ export class ConfigManager {
   }
 }
 
-export type Lazy<T> = () => T;
-
 export interface Image {
   /** Absolute path to the image */
   path: string;
   /** Image size in bytes */
-  size: number;
-  /** Image extension: jpg, png, webp, .. */
   ext: string;
-  /** Image dimensions */
-  dim: {
-    width: number;
-    height: number;
-  };
-  /** Raw represention of the image */
-  data: Lazy<Uint8Array>;
 }
 
 export interface Page {
-  title: string;
   number: number;
   image: Image;
 }
@@ -84,27 +72,14 @@ export interface Page {
 export interface Chapter {
   title: string;
   cover?: Image;
-  pages: Array<Lazy<Page>>;
+  pages: Array<Page>;
+  path: string;
 }
 
 export interface Book {
-  cover?: Image;
-  chapters: Array<Lazy<Chapter>>;
-}
-
-export abstract class Scanner {
-  constructor() {}
-
-  async init(config: Config) {
-    if (config.CACHE) {
-      await this.loadCache();
-    }
-  }
-
-  /** Perform a lookup by `keyword` */
-  abstract search(keyword: string): Promise<Array<Book>>;
-  /** Run and initialize the scanner */
-  abstract run(): Promise<Array<Book>>;
-  /** Initialize the scanner with cache metadata */
-  abstract loadCache(): Promise<void>;
+  title: string;
+  chapters: Array<Chapter>;
+  authors: Array<string>;
+  tags: Array<string>;
+  path: string;
 }

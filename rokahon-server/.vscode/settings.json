@@ -5,7 +5,7 @@
         "./src",
         "./tests"
     ],
-    "deno.config": "./src/config.json",
+    "deno.config": "./src/deno.json",
     "[typescript]": {
         "editor.defaultFormatter": "denoland.vscode-deno"
     },

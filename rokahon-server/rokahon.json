@@ -1,5 +1,7 @@
 {
   "PORT": 1770,
   "CACHE": true,
-  "LIBRARY_ROOT": []
+  "LIBRARY_ROOT": [
+    "./tests"
+  ]
 }
