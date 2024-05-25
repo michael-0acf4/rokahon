@@ -6,6 +6,8 @@
     "std/": "https://deno.land/std@0.219.0/",
     "zod": "https://deno.land/x/zod@v3.22.4/mod.ts",
     "oak": "jsr:@oak/oak",
-    "assert": "jsr:@std/assert"
+    "assert": "jsr:@std/assert",
+    "hash": "https://deno.land/std@0.99.0/hash/mod.ts",
+    "encoding/": "https://deno.land/std@0.224.0/encoding/"
   }
 }

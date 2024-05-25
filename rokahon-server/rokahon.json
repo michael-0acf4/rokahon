@@ -2,6 +2,6 @@
   "PORT": 1770,
   "CACHE": true,
   "LIBRARY_ROOT": [
-    "./tests"
+    "C:\\Users\\afmic\\Downloads\\Manga"
   ]
 }

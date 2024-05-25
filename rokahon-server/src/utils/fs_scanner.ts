@@ -1,27 +1,30 @@
-import { Book, Chapter } from "./types.ts";
-import { config } from "./setup.ts";
+import { Book, Chapter, Image, Page } from "./types.ts";
+import { config, logger } from "./setup.ts";
 import * as path from "std/path/mod.ts";
+import * as fs from "std/fs/mod.ts";
+import { computeKey, encodePath } from "./utils.ts";
 
-export class FileScanner {
+export class FsScanner {
   private readonly directories: Array<string>;
   private readonly useCache: boolean;
-  private cache: Record<string, Book> = {};
+  private books: Array<Book> = [];
 
   constructor(directories?: Array<string>, useCache?: boolean) {
     this.useCache = useCache === undefined ? true : useCache;
     this.directories = directories ? directories : config.LIBRARY_ROOT;
   }
 
-  search(_keyword: string): Promise<Book[]> {
-    throw new Error("Method not implemented.");
-  }
-
-  async run(): Promise<Book[]> {
+  async update() {
     const books = [] as Array<Book>;
     for (const dir of this.directories) {
       await this.discoverBooks(dir, dir, books);
     }
-    return books.sort((a, b) => a.title.localeCompare(b.title));
+    this.books = books.sort((a, b) => a.title.localeCompare(b.title));
+    return this;
+  }
+
+  async getBooks(): Promise<Array<Book>> {
+    return (await this.update()).books;
   }
 
   loadCache(): Promise<void> {
@@ -47,6 +50,12 @@ export class FileScanner {
     parentDir: string,
     books: Array<Book>,
   ) {
+    const hit = await this.getCache(parentDir);
+    if (hit) {
+      books.push(hit);
+      return;
+    }
+
     // For simplicity's sake, simply look 3 levels ahead (title => chap => page)
     const chapters = [] as Array<Chapter>;
     for await (const chap of Deno.readDir(parentDir)) {
@@ -58,7 +67,6 @@ export class FileScanner {
       const chapter = {
         title: chap.name,
         pages: [],
-        cover: undefined,
         path: nextDir,
       } as Chapter;
 
@@ -81,33 +89,92 @@ export class FileScanner {
     if (startLookup != parentDir && chapters.length > 0) {
       const bookPath = path.dirname(chapters[0].path);
       const bookTitle = path.basename(bookPath);
-      books.push(this.normalize({
+      const tmpBook = {
         title: bookTitle,
+        cover: {
+          path: "",
+          ext: "",
+          id: "",
+        },
         chapters,
         path: bookPath,
         authors: [],
         tags: [],
-      }));
+      };
+      const book = this.normalize(tmpBook);
+      this.saveCache(book);
+      books.push(book);
     }
   }
 
-  checkPage(index: number, filepath: string) {
-    const ext = path.extname(filepath).substring(1);
+  checkPage(index: number, filePath: string): Page | null {
+    const ext = path.extname(filePath).substring(1);
     return /jpg|jpeg|png|webp|gif|tiff/i.test(ext)
       ? {
         number: index,
         image: {
-          path: filepath,
+          path: filePath,
           ext,
+          id: encodePath(filePath),
         },
       }
       : null;
   }
 
-  /**
-   * @TODO determine metadata (author, tags)
-   */
+  inferCover(book: Book): Image {
+    const defaultPath = ["jpg", "jpeg", "png", "webp", "gif", "tiff"]
+      .map((ext) => path.join(book.path, `cover.${ext}`))
+      .filter((p) => fs.existsSync(p))
+      .pop();
+
+    if (defaultPath) {
+      const ext = path.extname(defaultPath).substring(1);
+      return {
+        path: defaultPath,
+        ext,
+        id: encodePath(defaultPath),
+      };
+    }
+
+    return book.chapters[0].pages[0].image;
+  }
+
   normalize(book: Book): Book {
+    book.cover = this.inferCover(book);
+    // TODO: infer tags,
     return book;
+  }
+
+  /** Save cache file for a book if the cache is enabled */
+  async saveCache(book: Book) {
+    if (this.useCache) {
+      const key = await computeKey(book.path);
+      const base = "cache";
+      const cacheFilePath = path.join(base, `${key}.json`);
+      if (!fs.existsSync(path.dirname(cacheFilePath))) {
+        await Deno.mkdir(base);
+      }
+      await Deno.writeTextFile(
+        cacheFilePath,
+        JSON.stringify(book, null, 2),
+      );
+      logger.info("Save ::", book.title, "::", book.path);
+    }
+  }
+
+  /** Return book from the cache if the cache is enabled and it hits */
+  async getCache(bookPath: string): Promise<Book | null> {
+    try {
+      if (this.useCache && fs.existsSync(bookPath)) {
+        const key = await computeKey(bookPath);
+        const cacheFilePath = path.join("cache", `${key}.json`);
+        const content = JSON.parse(await Deno.readTextFile(cacheFilePath));
+        // TODO: validate
+        return content as Book;
+      }
+      return null;
+    } catch (_) {
+      return null;
+    }
   }
 }

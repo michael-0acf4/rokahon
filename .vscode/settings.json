@@ -2,10 +2,10 @@
     "deno.enable": true,
     "editor.formatOnSave": true,
     "deno.enablePaths": [
-        "./src",
-        "./tests"
+        "rokahon-server/src",
+        "rokahon-server/tests"
     ],
-    "deno.config": "./src/deno.json",
+    "deno.config": "rokahon-server/src/deno.json",
     "[typescript]": {
         "editor.defaultFormatter": "denoland.vscode-deno"
     },

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import * as path from "std/path/mod.ts";
 import * as fs from "std/fs/mod.ts";
+import { logger } from "./setup.ts";
 
 const schema = z.object({
   PORT: z.number().int(),
@@ -21,14 +22,14 @@ export class ConfigManager {
   static readonly LOOKUP_PATH = path.resolve("rokahon.json");
 
   constructor() {
-    const filepath = ConfigManager.LOOKUP_PATH;
-    console.log(`Loading configuration`);
-    if (fs.existsSync(filepath)) {
-      const content = Deno.readTextFileSync(filepath);
+    const filePath = ConfigManager.LOOKUP_PATH;
+    logger.info(`Loading configuration at ${filePath}`);
+    if (fs.existsSync(filePath)) {
+      const content = Deno.readTextFileSync(filePath);
       this.value = JSON.parse(content);
     } else {
       const content = JSON.stringify(defaultConfig, null, 2);
-      Deno.writeTextFileSync(filepath, content, { create: true });
+      Deno.writeTextFileSync(filePath, content, { create: true });
       this.value = defaultConfig;
     }
     this.validate();
@@ -46,9 +47,9 @@ export class ConfigManager {
         const issues = err.issues.map(({ message, path }) =>
           ` - ${message} at path ${path.join(".")}`
         );
-        const filepath = ConfigManager.LOOKUP_PATH;
+        const filePath = ConfigManager.LOOKUP_PATH;
         throw Error(
-          `Bad configuration ${filepath}:\n${issues.join("\n")}`,
+          `Bad configuration ${filePath}:\n${issues.join("\n")}`,
         );
       } else {
         throw err;
@@ -62,6 +63,8 @@ export interface Image {
   path: string;
   /** Image size in bytes */
   ext: string;
+  /** Identitfier */
+  id: string;
 }
 
 export interface Page {
@@ -71,13 +74,13 @@ export interface Page {
 
 export interface Chapter {
   title: string;
-  cover?: Image;
   pages: Array<Page>;
   path: string;
 }
 
 export interface Book {
   title: string;
+  cover: Image;
   chapters: Array<Chapter>;
   authors: Array<string>;
   tags: Array<string>;

@@ -1,12 +1,12 @@
-import { FileScanner } from "../src/utils/fs_scanner.ts";
+import { FsScanner } from "../src/utils/fs_scanner.ts";
 import { assertSnapshot } from "std/testing/snapshot.ts";
-import { assertEquals } from "std/assert/mod.ts";
 
 Deno.test("Scan directories", async (t) => {
-  const scanner = new FileScanner(
+  const scanner = new FsScanner(
     ["./tests/test-dir"],
+    false,
   );
-  const books = await scanner.run();
+  const books = await scanner.getBooks();
 
   await t.step("Titles", async (t) => {
     await assertSnapshot(t, books.map((b) => b.title));
