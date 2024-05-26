@@ -2,9 +2,9 @@ package eu.kanade.tachiyomi.extension.all.rokahon
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RokahonResponse(
+data class RokahonResponse<T>(
     val isError: Boolean,
-    val data: List<RokahonBook>,
+    val data: T,
 )
 
 @Serializable
@@ -28,11 +28,17 @@ data class RokahonChapter(
 )
 
 @Serializable
-data class RokahonBook(
+data class RokahonSimpChapter(
+    val title: String,
+    val id: String,
+)
+
+@Serializable
+data class RokahonSimpBook(
+    val id: String,
     val title: String,
     val cover: RokahonImage,
-    val chapters: List<RokahonChapter>,
+    val chapters: List<RokahonSimpChapter>,
     val authors: List<String>,
     val tags: List<String>,
-    val path: String,
 )

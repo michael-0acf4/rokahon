@@ -86,3 +86,15 @@ export interface Book {
   tags: Array<string>;
   path: string;
 }
+
+export interface SimplifiedChapter {
+  title: string;
+  id: string;
+}
+
+export type SimplifiedBook =
+  & Pick<Book, Exclude<keyof Book, "chapters" | "path">>
+  & {
+    id: string;
+    chapters: Array<SimplifiedChapter>;
+  };
