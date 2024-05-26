@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlinx-serialization'
 
 ext {
-    extName = 'MyReadingManga'
-    pkgNameSuffix = 'all.myreadingmanga'
-    extClass = '.MyReadingMangaFactory'
-    extVersionCode = 49
-    isNsfw = true
+    extName = 'Rokahon'
+    pkgNameSuffix = 'all.rokahon'
+    extClass = '.Rokahon'
+    extVersionCode = 12
 }
 
 apply from: "$rootDir/common.gradle"

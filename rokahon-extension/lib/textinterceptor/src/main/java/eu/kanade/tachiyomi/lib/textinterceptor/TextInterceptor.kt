@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream
 
 class TextInterceptor : Interceptor {
     // With help from:
-    // https://github.com/tachiyomiorg/tachiyomi-extensions/pull/13304#issuecomment-1234532897
+    // https://github.com/tachiyomiorg/extensions/pull/13304#issuecomment-1234532897
     // https://medium.com/over-engineering/drawing-multiline-text-to-canvas-on-android-9b98f0bfa16a
 
     companion object {
