@@ -158,7 +158,7 @@ export class FsScanner {
         cacheFilePath,
         JSON.stringify(book, null, 2),
       );
-      logger.info("Save ::", book.title, "::", book.path);
+      logger.warn("Save ::", book.title, "::", book.path);
     }
   }
 

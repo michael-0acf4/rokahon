@@ -25,3 +25,11 @@ export function decodePath(b64: string): string {
   const buffer = base64url.decodeBase64Url(b64);
   return new TextDecoder().decode(buffer);
 }
+
+export function paginate<T>(items: Array<T>, targetPage: number, window = 10) {
+  const total = Math.round(items.length / window);
+  const page = Math.max(1, Math.min(targetPage, total));
+  return items.filter((v, i) => {
+    return i >= window * (page - 1) && i < window * page;
+  });
+}
