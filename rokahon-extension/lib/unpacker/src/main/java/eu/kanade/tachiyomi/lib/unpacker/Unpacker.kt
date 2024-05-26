@@ -3,7 +3,7 @@ package eu.kanade.tachiyomi.lib.unpacker
 /**
  * Helper class to unpack JavaScript code compressed by [packer](http://dean.edwards.name/packer/).
  *
- * Source code of packer can be found [here](https://github.com/evanw/packer/blob/master/packer.js).
+ * Source code of packer can be found [here](https://github.com/evanw/packer/blob/main/packer.js).
  */
 object Unpacker {
 

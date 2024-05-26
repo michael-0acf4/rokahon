@@ -81,7 +81,7 @@ object CryptoAES {
      *
      * https://stackoverflow.com/a/41434590
      * This method is equivalent to OpenSSL's EVP_BytesToKey function
-     * (see https://github.com/openssl/openssl/blob/master/crypto/evp/evp_key.c).
+     * (see https://github.com/openssl/openssl/blob/main/crypto/evp/evp_key.c).
      * By default, OpenSSL uses a single iteration, MD5 as the algorithm and UTF-8 encoded password data.
      *
      * @param keyLength the length of the generated key (in bytes)

@@ -1,5 +1,9 @@
 # Rokahon
 
+<p align="center">
+  <img src="misc/res/mipmap-hdpi/ic_launcher.png">
+</p>
+
 Rokahon (or ローカル本) is a simple server for your local gallery, you can
 browse local files through apps similar to Mihon or just use it as a simple REST
 endpoint.
