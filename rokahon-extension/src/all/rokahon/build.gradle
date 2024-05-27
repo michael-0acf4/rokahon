@@ -6,7 +6,7 @@ ext {
     extName = 'Rokahon'
     pkgNameSuffix = 'all.rokahon'
     extClass = '.Rokahon'
-    extVersionCode = 12
+    extVersionCode = 1
 }
 
 apply from: "$rootDir/common.gradle"

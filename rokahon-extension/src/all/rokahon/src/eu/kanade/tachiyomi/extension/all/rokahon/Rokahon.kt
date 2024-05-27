@@ -37,6 +37,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
         private const val ADDRESS_TITLE = "Server URL"
         private const val ADDRESS_DEFAULT = "http://192.168.1.170:1770"
     }
+
     override val baseUrl by lazy { preferences.getString(ADDRESS_TITLE, ADDRESS_DEFAULT)!! }
 
     private val json: Json by injectLazy()
@@ -54,7 +55,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
     override fun latestUpdatesParse(response: Response): MangasPage = throw Exception("Not supported")
     override fun imageUrlParse(response: Response): String = throw Exception("Not supported")
 
-    // MANGA SEARCH + PARSE
+    // MANGA SEARCH
     override fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request {
         // Response will be available in searchMangaParse
         println("FN_CALL searchMangaRequest")
@@ -91,7 +92,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
         return MangasPage(items, false)
     }
 
-    // POPULAR MANGA REQUEST + PARSE
+    // POPULAR MANGA
     override fun popularMangaRequest(page: Int) = searchMangaRequest(1, "", FilterList())
 
     override fun popularMangaParse(response: Response) = searchMangaParse(response)
@@ -104,7 +105,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
 
     override fun mangaDetailsParse(response: Response) = throw UnsupportedOperationException("mangaDetailsParse :: Not used")
 
-    // CHAPTER LIST + PARSE
+    // CHAPTER LIST
     override fun chapterListRequest(manga: SManga): Request {
         println("FN_CALL chapterListRequest " + manga.title + " :: " + manga.url)
         return GET(manga.url, headers)
@@ -147,7 +148,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
                 index = it.number,
                 imageUrl = "$baseUrl/image?id=" + it.image.id,
             )
-        }
+        }.reversed() // Mihon
     }
 
     // Settings/UI
@@ -182,7 +183,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
             setOnPreferenceChangeListener { _, newValue ->
                 try {
                     val res = preferences.edit().putString(title, newValue as String).commit()
-                    Toast.makeText(context, "Restart Tachiyomi to apply new setting.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Restart application to apply new setting.", Toast.LENGTH_LONG).show()
                     res
                 } catch (e: Exception) {
                     Log.e("Rokahon", "Exception while setting text preference", e)
