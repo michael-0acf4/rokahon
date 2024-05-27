@@ -154,7 +154,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
     // Settings/UI
 
     override fun setupPreferenceScreen(screen: PreferenceScreen) {
-        screen.addPreference(screen.editTextPreference(ADDRESS_TITLE, ADDRESS_DEFAULT, baseUrl, false, "i.e. http://192.168.1.115:4567"))
+        screen.addPreference(screen.editTextPreference(ADDRESS_TITLE, ADDRESS_DEFAULT, baseUrl, false, "http://192.168.1.170:1770"))
     }
 
     private val preferences: SharedPreferences by lazy {
