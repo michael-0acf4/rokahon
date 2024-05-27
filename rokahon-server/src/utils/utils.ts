@@ -1,7 +1,9 @@
 import * as path from "std/path/mod.ts";
 import * as base64url from "encoding/base64url.ts";
+import * as fs from "std/fs/mod.ts";
 import { Book, Chapter, SimplifiedBook, SimplifiedChapter } from "./types.ts";
 import { createHash } from "hash";
+import { Image } from "./types.ts";
 
 /** Returns a new key everytime `bookPath` has been modified */
 export async function computeKey(bookPath: string): Promise<string> {
@@ -87,4 +89,30 @@ export function retrieveChapter(
   }
 
   return chapRes[0];
+}
+
+/** Order from recent to older if `mtime` is not available*/
+export function comparePath(a: string, b: string): number {
+  if (fs.existsSync(a) && fs.existsSync(b)) {
+    const statA = Deno.statSync(a);
+    const statB = Deno.statSync(b);
+    if (statA.mtime && statB.mtime) {
+      // recent > old
+      return statB.mtime.getTime() - statA.mtime.getTime();
+    }
+  }
+  // keep original ordering
+  return 0;
+}
+
+/**
+ * Attempt to sort in numerical order in ascending order,
+ * otherwise try to order from recent to old
+ */
+export function comparePathByNumOrder(a: string, b: string): number {
+  const locale = a.localeCompare(b);
+  if (locale == 0) {
+    return comparePath(a, b);
+  }
+  return locale;
 }
