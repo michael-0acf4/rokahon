@@ -102,7 +102,7 @@ export class FsScanner {
         tags: [],
       };
       const book = this.normalize(tmpBook);
-      this.saveCache(book);
+      await this.saveCache(book);
       books.push(book);
     }
   }
