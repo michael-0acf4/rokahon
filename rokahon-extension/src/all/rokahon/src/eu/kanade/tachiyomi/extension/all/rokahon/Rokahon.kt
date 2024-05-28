@@ -148,7 +148,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
                 index = it.number,
                 imageUrl = "$baseUrl/image?id=" + it.image.id,
             )
-        }.reversed() // Mihon
+        }
     }
 
     // Settings/UI

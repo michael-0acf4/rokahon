@@ -144,7 +144,9 @@ export class FsScanner {
     book.cover = this.inferCover(book);
 
     // fix chapter order
-    book.chapters.sort((ca, cb) => comparePathByNumOrder(ca.path, cb.path));
+    book.chapters.sort((ca, cb) =>
+      -1 * comparePathByNumOrder(ca.path, cb.path)
+    );
 
     // fix page order
     for (const chapter of book.chapters) {
