@@ -4,12 +4,17 @@ import * as fs from "std/fs/mod.ts";
 import { logger } from "./setup.ts";
 
 const schema = z.object({
+  VERSION: z.string(),
   PORT: z.number().int(),
   CACHE: z.boolean().default(true),
   LIBRARY_ROOT: z.array(z.string()),
 });
 
+/** `x.y` + `.extensionVerion` */
+export const VERSION = "0.1.1";
+
 const defaultConfig = schema.parse({
+  VERSION,
   PORT: 1770,
   CACHE: true,
   LIBRARY_ROOT: [],

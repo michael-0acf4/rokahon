@@ -18,8 +18,8 @@ snapshot[`Scan directories > Chapters 1`] = `
   [
     2,
     [
-      2,
       1,
+      2,
     ],
   ],
 ]
@@ -62,6 +62,20 @@ snapshot[`Scan directories 1`] = `
           {
             image: {
               ext: "png",
+              id: "RDpcZGV2LWVudlxkZW5vXHJva2Fob25ccm9rYWhvbi1zZXJ2ZXJcdGVzdHNcdGVzdC1kaXJcb25lXHRpdGxlMVxjaGFwdGVyLTFcMS5wbmc",
+              path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1\\\\1.png",
+            },
+            number: 1,
+          },
+        ],
+        path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1",
+        title: "chapter-1",
+      },
+      {
+        pages: [
+          {
+            image: {
+              ext: "png",
               id: "RDpcZGV2LWVudlxkZW5vXHJva2Fob25ccm9rYWhvbi1zZXJ2ZXJcdGVzdHNcdGVzdC1kaXJcb25lXHRpdGxlMVxiYmJcMS5wbmc",
               path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb\\\\1.png",
             },
@@ -78,20 +92,6 @@ snapshot[`Scan directories 1`] = `
         ],
         path: "tests\\\\test-dir\\\\one\\\\title1\\\\bbb",
         title: "bbb",
-      },
-      {
-        pages: [
-          {
-            image: {
-              ext: "png",
-              id: "RDpcZGV2LWVudlxkZW5vXHJva2Fob25ccm9rYWhvbi1zZXJ2ZXJcdGVzdHNcdGVzdC1kaXJcb25lXHRpdGxlMVxjaGFwdGVyLTFcMS5wbmc",
-              path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1\\\\1.png",
-            },
-            number: 1,
-          },
-        ],
-        path: "tests\\\\test-dir\\\\one\\\\title1\\\\chapter-1",
-        title: "chapter-1",
       },
     ],
     cover: {

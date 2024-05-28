@@ -3,7 +3,6 @@ import * as base64url from "encoding/base64url.ts";
 import * as fs from "std/fs/mod.ts";
 import { Book, Chapter, SimplifiedBook, SimplifiedChapter } from "./types.ts";
 import { createHash } from "hash";
-import { Image } from "./types.ts";
 
 /** Returns a new key everytime `bookPath` has been modified */
 export async function computeKey(bookPath: string): Promise<string> {
@@ -37,7 +36,7 @@ export function decodePath(b64: string): string {
 export function paginate<T>(items: Array<T>, targetPage: number, window = 10) {
   const total = Math.round(items.length / window);
   const page = Math.max(1, Math.min(targetPage, total));
-  return items.filter((v, i) => {
+  return items.filter((_, i) => {
     return i >= window * (page - 1) && i < window * page;
   });
 }
