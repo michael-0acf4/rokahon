@@ -5,8 +5,8 @@ CONFIG = ./src/deno.json
 server:
 	deno run -A --config=$(CONFIG) $(MAIN)
 
-# compile:
-# 	deno compile -A --output $(BIN) --config=$(CONFIG) $(MAIN) --is_compiled_binary
+compile:
+	deno compile -A --output $(BIN) --config=$(CONFIG) $(MAIN) --is_compiled_binary
 
 cache:
 	deno cache --config=$(CONFIG) --lock-write $(MAIN)

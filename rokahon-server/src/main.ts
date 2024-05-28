@@ -11,7 +11,6 @@ app.use(async (ctx, next) => {
 });
 
 app.use(libraryRouter.routes());
-
 app.use(resourcesRouter.routes());
 
 logger.info(`Server running at http://localhost:${config.PORT}`);

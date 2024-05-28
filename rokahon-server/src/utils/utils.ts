@@ -1,5 +1,6 @@
 import * as path from "std/path/mod.ts";
 import * as base64url from "encoding/base64url.ts";
+import * as fs from "std/fs/mod.ts";
 import { Book, Chapter, SimplifiedBook, SimplifiedChapter } from "./types.ts";
 import { createHash } from "hash";
 
@@ -35,7 +36,7 @@ export function decodePath(b64: string): string {
 export function paginate<T>(items: Array<T>, targetPage: number, window = 10) {
   const total = Math.round(items.length / window);
   const page = Math.max(1, Math.min(targetPage, total));
-  return items.filter((v, i) => {
+  return items.filter((_, i) => {
     return i >= window * (page - 1) && i < window * page;
   });
 }
@@ -87,4 +88,30 @@ export function retrieveChapter(
   }
 
   return chapRes[0];
+}
+
+/** Order from recent to older if `mtime` is not available*/
+export function comparePath(a: string, b: string): number {
+  if (fs.existsSync(a) && fs.existsSync(b)) {
+    const statA = Deno.statSync(a);
+    const statB = Deno.statSync(b);
+    if (statA.mtime && statB.mtime) {
+      // recent > old
+      return statB.mtime.getTime() - statA.mtime.getTime();
+    }
+  }
+  // keep original ordering
+  return 0;
+}
+
+/**
+ * Attempt to sort in numerical order in ascending order,
+ * otherwise try to order from recent to old
+ */
+export function comparePathByNumOrder(a: string, b: string): number {
+  const locale = a.localeCompare(b);
+  if (locale == 0) {
+    return comparePath(a, b);
+  }
+  return locale;
 }

@@ -37,6 +37,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
         private const val ADDRESS_TITLE = "Server URL"
         private const val ADDRESS_DEFAULT = "http://192.168.1.170:1770"
     }
+
     override val baseUrl by lazy { preferences.getString(ADDRESS_TITLE, ADDRESS_DEFAULT)!! }
 
     private val json: Json by injectLazy()
@@ -53,12 +54,11 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
     override fun latestUpdatesRequest(page: Int): Request = throw Exception("Not supported")
     override fun latestUpdatesParse(response: Response): MangasPage = throw Exception("Not supported")
     override fun imageUrlParse(response: Response): String = throw Exception("Not supported")
-    override fun pageListParse(response: Response): List<Page> = throw UnsupportedOperationException("Not used")
 
-    // MANGA SEARCH + PARSE
+    // MANGA SEARCH
     override fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request {
         // Response will be available in searchMangaParse
-        println("searchMangaRequest")
+        println("FN_CALL searchMangaRequest")
         val url = "$baseUrl/search"
             .toHttpUrl()
             .newBuilder()
@@ -67,8 +67,9 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
             .build()
         return GET(url, headers)
     }
+
     override fun searchMangaParse(response: Response): MangasPage {
-        println("searchMangaParse")
+        println("FN_CALL searchMangaParse")
         var rokaResponse = json.decodeFromString<RokahonResponse<List<RokahonSimpBook>>>(response.body.string())
         if (rokaResponse.isError) {
             val msg = rokaResponse.data.toString()
@@ -83,7 +84,6 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
                     title = book.title
                     url = "$baseUrl/book/" + book.id
                     thumbnail_url = "$baseUrl/image?id=" + book.cover.id
-                    genre = "sample"
                     status = SManga.ONGOING
                 },
             )
@@ -92,58 +92,28 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
         return MangasPage(items, false)
     }
 
-    // POPULAR MANGA REQUEST + PARSE
+    // POPULAR MANGA
     override fun popularMangaRequest(page: Int) = searchMangaRequest(1, "", FilterList())
 
-    override fun popularMangaParse(response: Response): MangasPage {
-        return searchMangaParse(response)
-    }
+    override fun popularMangaParse(response: Response) = searchMangaParse(response)
 
     // MANGA DETAILS
     override fun fetchMangaDetails(manga: SManga): Observable<SManga> {
-        println("fetchMangaDetails " + manga.title)
+        println("FN_CALL fetchMangaDetails " + manga.title + " :: " + manga.url)
         return Observable.just(manga)
     }
 
-    override fun mangaDetailsRequest(manga: SManga): Request {
-        println("mangaDetailsRequest " + manga.title)
-        return super.mangaDetailsRequest(manga)
-    }
+    override fun mangaDetailsParse(response: Response) = throw UnsupportedOperationException("mangaDetailsParse :: Not used")
 
-    override fun mangaDetailsParse(response: Response) = throw UnsupportedOperationException("Not used.")
-
-    // CHAPTER LIST + PARSE
-//    override fun prepareNewChapter(chapter: SChapter, manga: SManga) {
-//        println("prepareNewChapter " + chapter.url)
-//        super.prepareNewChapter(chapter, manga)
-//    }
-
-    override fun fetchChapterList(manga: SManga): Observable<List<SChapter>> {
-        println("fetchChapterList " + manga.title)
-        var response = GET(manga.url, headers)
-        val rokaResponse = json.decodeFromString<RokahonResponse<RokahonSimpBook>>(response.body.toString())
-        if (rokaResponse.isError) {
-            val msg = rokaResponse.data.toString()
-            Log.e("Search", msg)
-        }
-        val book = rokaResponse.data
-        val chapters = book.chapters.map {
-            SChapter.create().apply {
-                url = "$baseUrl/pages/" + book.id + "/" + it.id
-                name = it.title
-            }
-        }
-        return Observable.just(chapters)
-    }
-
+    // CHAPTER LIST
     override fun chapterListRequest(manga: SManga): Request {
-        println("chapterListRequest " + manga.title + " :: " + manga.url)
+        println("FN_CALL chapterListRequest " + manga.title + " :: " + manga.url)
         return GET(manga.url, headers)
     }
 
     override fun chapterListParse(response: Response): List<SChapter> {
-        println("chapterListParse " + response.request.url)
-        val rokaResponse = json.decodeFromString<RokahonResponse<RokahonSimpBook>>(response.body.toString())
+        println("FN_CALL chapterListParse " + response.request.url)
+        val rokaResponse = json.decodeFromString<RokahonResponse<RokahonSimpBook>>(response.body.string())
         if (rokaResponse.isError) {
             val msg = rokaResponse.data.toString()
             Log.e("Search", msg)
@@ -152,20 +122,39 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
         val book = rokaResponse.data
         return book.chapters.map {
             SChapter.create().apply {
-                url = "$baseUrl/pages/" + book.id + "/" + it.id
+                url = "$baseUrl/chapter/" + book.id + "/" + it.id
                 name = it.title
             }
         }
     }
 
+    // PAGE
     override fun pageListRequest(chapter: SChapter): Request {
-        TODO("page list request")
+        println("FN_CALL pageListRequest " + chapter.url)
+        return GET(chapter.url, headers)
+    }
+
+    override fun pageListParse(response: Response): List<Page> {
+        println("FN_CALL pageListParse " + response.request.url)
+        val rokaResponse = json.decodeFromString<RokahonResponse<RokahonChapter>>(response.body.string())
+        if (rokaResponse.isError) {
+            val msg = rokaResponse.data.toString()
+            Log.e("Search", msg)
+            throw Exception(msg)
+        }
+        val chapter = rokaResponse.data
+        return chapter.pages.map {
+            Page(
+                index = it.number,
+                imageUrl = "$baseUrl/image?id=" + it.image.id,
+            )
+        }
     }
 
     // Settings/UI
 
     override fun setupPreferenceScreen(screen: PreferenceScreen) {
-        screen.addPreference(screen.editTextPreference(ADDRESS_TITLE, ADDRESS_DEFAULT, baseUrl, false, "i.e. http://192.168.1.115:4567"))
+        screen.addPreference(screen.editTextPreference(ADDRESS_TITLE, ADDRESS_DEFAULT, baseUrl, false, "http://192.168.1.170:1770"))
     }
 
     private val preferences: SharedPreferences by lazy {
@@ -194,7 +183,7 @@ class Rokahon : ConfigurableSource, UnmeteredSource, HttpSource() {
             setOnPreferenceChangeListener { _, newValue ->
                 try {
                     val res = preferences.edit().putString(title, newValue as String).commit()
-                    Toast.makeText(context, "Restart Tachiyomi to apply new setting.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Restart application to apply new setting.", Toast.LENGTH_LONG).show()
                     res
                 } catch (e: Exception) {
                     Log.e("Rokahon", "Exception while setting text preference", e)

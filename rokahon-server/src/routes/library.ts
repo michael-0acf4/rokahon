@@ -10,6 +10,8 @@ import {
 /**
  * * `/`: All books
  * * `/search?keyword={value}`: Search a book
+ * * `/book/{bookdId}`: Book with chapter id list
+ * * `/chapter/{bookId}/{chapterId}`: Chapter with page list
  *
  * Response:
  * ```json
@@ -94,7 +96,7 @@ libraryRouter.get("/book/:bookId", async (ctx) => {
   }
 });
 
-libraryRouter.get("/pages/:bookId/:chapterId", async (ctx) => {
+libraryRouter.get("/chapter/:bookId/:chapterId", async (ctx) => {
   try {
     const origBooks = await scanner.getBooks();
     const { bookId, chapterId } = ctx.params;
