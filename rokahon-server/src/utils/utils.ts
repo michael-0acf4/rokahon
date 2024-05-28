@@ -105,8 +105,8 @@ export function comparePath(a: string, b: string): number {
 }
 
 /**
- * Attempt to sort in numerical order in ascending order,
- * otherwise try to order from recent to old
+ * Attempt to sort numerically from low to high,
+ * otherwise from recent to old
  */
 export function comparePathByNumOrder(a: string, b: string): number {
   const locale = a.localeCompare(b);

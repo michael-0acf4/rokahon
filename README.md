@@ -5,7 +5,8 @@
 </p>
 
 Rokahon (or ローカル本) is a simple server for your local gallery, you can
-browse local files through apps similar to Mihon or use it as a simple REST server.
+browse local files through apps similar to Mihon or use it as a simple REST
+server.
 
 ## Rokahon server
 
@@ -15,6 +16,7 @@ For example, with the configuration..
 
 ```json
 {
+  "VERSION": "0.1.0",
   "PORT": 1770,
   "CACHE": true,
   "LIBRARY_ROOT": [
