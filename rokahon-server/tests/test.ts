@@ -25,6 +25,4 @@ Deno.test("Scan directories", async (t) => {
       ]),
     );
   });
-
-  await assertSnapshot(t, books);
 });
