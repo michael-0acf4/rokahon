@@ -5,8 +5,7 @@
 </p>
 
 Rokahon (or ローカル本) is a simple server for your local gallery, you can
-browse local files through apps similar to Mihon or just use it as a simple REST
-endpoint.
+browse local files through apps similar to Mihon or use it as a simple REST server.
 
 ## Rokahon server
 
@@ -25,7 +24,7 @@ For example, with the configuration..
 }
 ```
 
-Rōkahon will serve any subdirectory that follows the structure
+Rokahon will serve any subdirectory that follows the structure
 `title > chapters > pages`
 
 ```
@@ -51,7 +50,7 @@ other/lib2/..
 
 ## Rokahon Mihon Extension
 
-Rokahon android extension for Mihon or any most Tachyomi forks.
+Rokahon android extension with most Tachiyomi forks, including Mihon.
 
 Simply launch the server, install the extension, configure the address and you
 are done.
