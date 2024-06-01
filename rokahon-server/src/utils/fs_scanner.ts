@@ -22,6 +22,10 @@ export class FsScanner {
   async update() {
     this.books = [];
     for (const dir of this.directories) {
+      if (!await fs.exists(dir)) {
+        logger.warn("Cannot resolve root:", dir);
+        continue;
+      }
       await this.discoverBooks(dir, dir, this.books);
     }
     this.books.sort((a, b) => comparePath(a.path, b.path));

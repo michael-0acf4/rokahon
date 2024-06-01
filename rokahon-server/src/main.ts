@@ -6,7 +6,7 @@ import { resourcesRouter } from "./routes/resources.ts";
 const app = new Application();
 
 app.use(async (ctx, next) => {
-  logger.info("Req ::", ctx.request.url.href, ctx.request.userAgent.browser);
+  logger.info("Req ::", ctx.request.url.href);
   await next();
 });
 
