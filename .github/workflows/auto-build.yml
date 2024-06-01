@@ -31,15 +31,10 @@ jobs:
           cd rokahon-server
           make compile
 
-      - name: Archive build for ${{ matrix.os }}
-        run: |
-          cd rokahon-server
-          tar -czvf ../rokahon-${{ github.ref_name }}-${{ matrix.os }}.tar.gz *
-
       - name: Release ${{ matrix.os }}
         uses: svenstaro/upload-release-action@v2
         with:
           tag: ${{ github.ref }}
-          file: "rokahon-${{ github.ref_name }}-${{ matrix.os }}.tar.gz"
-          asset_name: "rokahon-${{ github.ref_name }}-${{ matrix.os }}.tar.gz"
+          file: "rokahon-server/rokahon-${{ github.ref_name }}-${{ matrix.os }}${{ matrix.extension }}"
+          asset_name: "rokahon-${{ github.ref_name }}-${{ matrix.os }}${{ matrix.extension }}"
           overwrite: true
