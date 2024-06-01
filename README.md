@@ -16,7 +16,7 @@ For example, with the configuration..
 
 ```json
 {
-  "VERSION": "0.1.1",
+  "VERSION": "0.2.1",
   "PORT": 1770,
   "CACHE": true,
   "LIBRARY_ROOT": [

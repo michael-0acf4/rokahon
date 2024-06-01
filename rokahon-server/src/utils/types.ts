@@ -11,7 +11,7 @@ const schema = z.object({
 });
 
 /** `x.y` + `.extensionVerion` */
-export const VERSION = "0.1.1";
+export const VERSION = "0.2.1";
 
 const defaultConfig = schema.parse({
   VERSION,
