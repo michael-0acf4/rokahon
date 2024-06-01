@@ -91,7 +91,7 @@ export function retrieveChapter(
 }
 
 /** Order from recent to older if `mtime` is not available*/
-export function comparePath(a: string, b: string): number {
+export function compareMtimePath(a: string, b: string): number {
   if (fs.existsSync(a) && fs.existsSync(b)) {
     const statA = Deno.statSync(a);
     const statB = Deno.statSync(b);
@@ -104,14 +104,42 @@ export function comparePath(a: string, b: string): number {
   return 0;
 }
 
-/**
- * Attempt to sort numerically from low to high,
- * otherwise from recent to old
- */
-export function comparePathByNumOrder(a: string, b: string): number {
-  const locale = a.localeCompare(b);
-  if (locale == 0) {
-    return comparePath(a, b);
+function commonPrefix(a: string, b: string) {
+  let i = 0;
+  while (i < a.length && i < b.length && a[i] === b[i]) {
+    i++;
   }
-  return locale;
+  return a.substring(0, i);
+}
+
+/**
+ * Parse all digits and compare one by one from left to right
+ * * `a_i < b_i`: `-1`
+ * * `a_i > b_i`: `1`
+ * * `a == b`: fallback to `a.localeCompare(b)`
+ */
+export function parseNumThenCompare(a: string, b: string) {
+  const prefix = commonPrefix(a, b);
+
+  // Check if a and b are of the same 'kind'
+  if (prefix != "") {
+    // Note: [0-9]+ will not do since 1.44 should still be lower than 1.5 for example
+    const na = a.match(/[0-9]/g);
+    const nb = b.match(/[0-9]/g);
+    if (na && nb) {
+      const maxComp = Math.min(na.length, nb.length);
+      for (let i = 0; i < maxComp; i++) {
+        const va = parseInt(na[i]);
+        const vb = parseInt(nb[i]);
+        if (va > vb) {
+          return 1;
+        } else if (va < vb) {
+          return -1;
+        }
+      }
+    }
+  }
+
+  // fallback
+  return a.localeCompare(b);
 }

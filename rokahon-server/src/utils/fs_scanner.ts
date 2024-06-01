@@ -3,10 +3,10 @@ import { config, logger } from "./setup.ts";
 import * as path from "std/path/mod.ts";
 import * as fs from "std/fs/mod.ts";
 import {
-  comparePath,
-  comparePathByNumOrder,
+  compareMtimePath,
   computeKey,
   encodePath,
+  parseNumThenCompare,
 } from "./utils.ts";
 
 export class FsScanner {
@@ -28,7 +28,7 @@ export class FsScanner {
       }
       await this.discoverBooks(dir, dir, this.books);
     }
-    this.books.sort((a, b) => comparePath(a.path, b.path));
+    this.books.sort((a, b) => compareMtimePath(a.path, b.path));
     return this;
   }
 
@@ -148,14 +148,12 @@ export class FsScanner {
     book.cover = this.inferCover(book);
 
     // fix chapter order
-    book.chapters.sort((ca, cb) =>
-      -1 * comparePathByNumOrder(ca.path, cb.path)
-    );
+    book.chapters.sort((ca, cb) => -1 * parseNumThenCompare(ca.path, cb.path));
 
     // fix page order
     for (const chapter of book.chapters) {
       chapter.pages.sort((pa, pb) =>
-        comparePathByNumOrder(pa.image.path, pb.image.path)
+        parseNumThenCompare(pa.image.path, pb.image.path)
       );
       // fix numbering
       for (let i = 1; i <= chapter.pages.length; i++) {
