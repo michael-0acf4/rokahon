@@ -23,7 +23,7 @@ export class FsScanner {
     this.books = [];
     for (const dir of this.directories) {
       if (!await fs.exists(dir)) {
-        logger.warn("Cannot resolve root:", dir);
+        logger.error("Cannot resolve root:", dir);
         continue;
       }
       await this.discoverBooks(dir, dir, this.books);

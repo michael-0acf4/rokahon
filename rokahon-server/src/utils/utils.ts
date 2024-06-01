@@ -114,28 +114,28 @@ function commonPrefix(a: string, b: string) {
 
 /**
  * Parse all digits and compare one by one from left to right
+ * while accounting for entries with similar prefixes.
  * * `a_i < b_i`: `-1`
  * * `a_i > b_i`: `1`
  * * `a == b`: fallback to `a.localeCompare(b)`
  */
 export function parseNumThenCompare(a: string, b: string) {
-  const prefix = commonPrefix(a, b);
+  const na = a.match(/[0-9]+/g);
+  const nb = b.match(/[0-9]+/g);
 
-  // Check if a and b are of the same 'kind'
-  if (prefix != "") {
-    // Note: [0-9]+ will not do since 1.44 should still be lower than 1.5 for example
-    const na = a.match(/[0-9]/g);
-    const nb = b.match(/[0-9]/g);
-    if (na && nb) {
-      const maxComp = Math.min(na.length, nb.length);
-      for (let i = 0; i < maxComp; i++) {
-        const va = parseInt(na[i]);
-        const vb = parseInt(nb[i]);
-        if (va > vb) {
-          return 1;
-        } else if (va < vb) {
-          return -1;
-        }
+  // Check if a and b are of the same 'kind': ch 1, ch 2, vol 1, vol 2, ..
+  const sameKind = "" == commonPrefix(a, b);
+  // Check if 'page-ish': 1.jpg, 2.1.jpg, 2.3.jpg, ..
+  const startWithNumber = /^[0-9]/.test(a) && /^[0-9]/.test(b);
+  if (na && nb && (sameKind || startWithNumber)) {
+    const maxComp = Math.min(na.length, nb.length);
+    for (let i = 0; i < maxComp; i++) {
+      const va = parseInt(na[i]);
+      const vb = parseInt(nb[i]);
+      if (va > vb) {
+        return 1;
+      } else if (va < vb) {
+        return -1;
       }
     }
   }
