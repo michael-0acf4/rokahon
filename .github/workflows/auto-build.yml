@@ -35,6 +35,6 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           tag: ${{ github.ref }}
-          file: "rokahon-server/rokahon-${{ github.ref_name }}-${{ matrix.os }}${{ matrix.extension }}"
+          file: "rokahon-server/rokahon${{ matrix.extension }}"
           asset_name: "rokahon-${{ github.ref_name }}-${{ matrix.os }}${{ matrix.extension }}"
           overwrite: true
