@@ -10,13 +10,13 @@ server.
 
 ## Rokahon server
 
-A very basic server that exposes your local gallery into a functional REST api.
+A very basic server that exposes your local gallery.
 
 For example, with the configuration..
 
 ```json
 {
-  "VERSION": "0.1.0",
+  "VERSION": "0.1.1",
   "PORT": 1770,
   "CACHE": true,
   "LIBRARY_ROOT": [
@@ -27,7 +27,7 @@ For example, with the configuration..
 ```
 
 Rokahon will serve any subdirectory that follows the structure
-`title > chapters > pages`
+`title > chapters > pages` located at `path/to/lib1` and `other/lib2`.
 
 ```
 path/to/lib1/..
@@ -52,7 +52,7 @@ other/lib2/..
 
 ## Rokahon Mihon Extension
 
-Rokahon android extension with most Tachiyomi forks, including Mihon.
+Rokahon android extension that works with most Tachiyomi forks, including Mihon.
 
 Simply launch the server, install the extension, configure the address and you
 are done.
